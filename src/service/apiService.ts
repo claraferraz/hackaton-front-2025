@@ -34,3 +34,7 @@ export const getLocations = async () => {
 export const getEpisodes = async () => {
   return await axios.get(url.episodes);
 };
+
+export const getEpisodesById = async (id: string) => {
+  return await axios.get(`${url.episodes}/${id}`);
+};

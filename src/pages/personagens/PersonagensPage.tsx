@@ -7,8 +7,25 @@ import {
   CardPersonagem,
   type PersonagemAPI,
 } from "../../components/CardPersonagem/CardPersonagem";
-import { Grid } from "@mui/system";
+import { Grid, styled } from "@mui/system";
 import RickAndMortyImage from "../../assets/Rick-and-Morty-Shop-logo.png";
+
+const ResultBox = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  backgroundColor: "#24282F",
+  color: "white",
+  padding: "2rem",
+  marginTop: "2rem",
+}));
+
+const ResultadoP = styled("p")(() => ({
+  width: "100%",
+  textAlign: "left",
+  fontSize: "25px",
+  paddingBottom: "2rem",
+}));
 
 export const PersonagensPage = () => {
   const [personagem, setPersonagem] = useState("");
@@ -92,14 +109,14 @@ export const PersonagensPage = () => {
             <p>©rickandmortyapi.com</p>
           </Box>
         ) : (
-          <>
-            <p>Resultados</p>
+          <ResultBox>
+            <ResultadoP>Resultados</ResultadoP>
             <Grid container spacing={4}>
               {listaPersonagens.map((personagem) => (
                 <CardPersonagem key={personagem.id} {...personagem} />
               ))}
             </Grid>
-          </>
+          </ResultBox>
         )}
       </Box>
     </div>

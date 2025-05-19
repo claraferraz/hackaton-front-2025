@@ -1,4 +1,6 @@
-import { Box } from "@mui/material";
+import { Box, styled } from "@mui/material";
+import { getEpisodesById } from "../../service/apiService";
+import { useEffect, useState } from "react";
 
 export type PersonagemAPI = {
   id: number;
@@ -21,18 +23,62 @@ export type PersonagemAPI = {
   created: string;
 };
 
+const CardBox = styled(Box)(() => ({
+  backgroundColor: "#3C3E44",
+  color: "white",
+  display: "flex",
+  width: "30%",
+  height: "220px",
+  borderRadius: "10px",
+  overflow: "hidden",
+}));
+
+const InfoBox = styled(Box)(() => ({
+  display: "flex",
+  flexDirection: "column",
+  justifyContent: "space-between",
+  padding: "1rem",
+}));
+
+const AparicaoP = styled("p")(() => ({
+  color: "#BEBEBE",
+  marginTop: "0.5rem",
+}));
+
 export const CardPersonagem = ({ ...personagem }: PersonagemAPI) => {
+  const [firstEpisode, setFirstEpisode] = useState("");
+  const [lastEpisode, setLastEpisode] = useState("");
+
+  useEffect(() => {
+    const getFirstEpisode = async () => {
+      const response = await getEpisodesById(
+        personagem.episode[0].split("/").pop() || ""
+      );
+      setFirstEpisode(response.data.name);
+    };
+
+    const getLastEpisode = async () => {
+      const response = await getEpisodesById(
+        personagem.episode[personagem.episode.length - 1].split("/").pop() || ""
+      );
+      setLastEpisode(response.data.name);
+    };
+
+    getFirstEpisode();
+    getLastEpisode();
+  }, [personagem.episode]);
+
   return (
-    <Box display={"flex"}>
+    <CardBox>
       <img src={personagem.image} alt="" />
-      <Box>
+      <InfoBox>
         <h3>{personagem.name}</h3>
         <p>{personagem.status}</p>
-        <p>Primeira aparição:</p>
-        <p>{personagem.episode[0]}</p>
-        <p>Última aparição:</p>
-        <p>{personagem.episode[personagem.episode.length - 1]}</p>
-      </Box>
-    </Box>
+        <AparicaoP>Primeira aparição:</AparicaoP>
+        <p>{firstEpisode}</p>
+        <AparicaoP>Última aparição:</AparicaoP>
+        <p>{lastEpisode}</p>
+      </InfoBox>
+    </CardBox>
   );
 };
