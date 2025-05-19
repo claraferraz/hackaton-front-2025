@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/home/HomePage";
-import Header from "./components/header";
+import Header from "./components/header/Header";
 import { PersonagensPage } from "./pages/personagens/PersonagensPage";
 import { EpisodiosPage } from "./pages/episodios/EpisodiosPage";
 import { LugaresPage } from "./pages/lugares/LugaresPage";
