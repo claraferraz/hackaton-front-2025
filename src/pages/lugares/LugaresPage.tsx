@@ -12,9 +12,8 @@ const LugaresBox = styled(Box)(() => {
   return {
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    margin: "0 auto",
-    gap: "2rem",
     margin: "3rem auto",
+    gap: "2rem",
   };
 });
 
