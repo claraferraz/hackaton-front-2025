@@ -5,6 +5,18 @@ import {
   CardLugares,
   type LugaresAPI,
 } from "../../components/CardLugares/CardLugares";
+import { Box, styled } from "@mui/material";
+import { Center } from "../../components/Center/Center";
+
+const LugaresBox = styled(Box)(() => {
+  return {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    margin: "0 auto",
+    gap: "2rem",
+    margin: "3rem auto",
+  };
+});
 
 export const LugaresPage = () => {
   const [lugares, setLugares] = useState<LugaresAPI[]>([]);
@@ -16,10 +28,14 @@ export const LugaresPage = () => {
   }, []);
 
   return (
-    <div>
+    <Center>
       <H1>Lugares Famosos de Rick and Morty</H1>
-      {lugares.length > 0 &&
-        lugares.map((lugar) => <CardLugares key={lugar.id} {...lugar} />)}
-    </div>
+      <LugaresBox>
+        {lugares.length > 0 &&
+          lugares.map((lugar) => {
+            return <CardLugares key={lugar.id} {...lugar} />;
+          })}
+      </LugaresBox>
+    </Center>
   );
 };

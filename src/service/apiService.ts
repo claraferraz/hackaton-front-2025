@@ -27,6 +27,10 @@ export const getPersonagem = async ({ ...payload }: Payload) => {
   });
 };
 
+export const getPersonagemById = async (id: string) => {
+  return await axios.get(`${url.characters}/${id}`);
+};
+
 export const getLocations = async () => {
   return await axios.get(url.locations);
 };
