@@ -8,6 +8,7 @@ import {
   type PersonagemAPI,
 } from "../../components/CardPersonagem/CardPersonagem";
 import { Grid } from "@mui/system";
+import RickAndMortyImage from "../../assets/Rick-and-Morty-Shop-logo.png";
 
 export const PersonagensPage = () => {
   const [personagem, setPersonagem] = useState("");
@@ -18,15 +19,19 @@ export const PersonagensPage = () => {
   const [listaPersonagens, setlistaPersonagens] = useState<PersonagemAPI[]>([]);
 
   useEffect(() => {
-    getPersonagem({
-      name: personagem,
-      status: status,
-      gender: gender,
-    }).then((response) => {
-      console.log(personagem, status, gender);
-      setlistaPersonagens(response.data.results);
-      console.log(response.data);
-    });
+    if (personagem === "" && gender === "Gender" && status === "Status") {
+      setlistaPersonagens([]);
+    } else {
+      getPersonagem({
+        name: personagem,
+        status: status,
+        gender: gender,
+      }).then((response) => {
+        console.log(personagem, status, gender);
+        setlistaPersonagens(response.data.results);
+        console.log(response.data);
+      });
+    }
   }, [personagem, status, gender]);
 
   return (
@@ -74,13 +79,28 @@ export const PersonagensPage = () => {
         </Box>
       </Center>
       <Box>
-        <p>Resultados</p>
-        <Grid container spacing={4}>
-          {listaPersonagens.length > 0 &&
-            listaPersonagens.map((personagem) => (
-              <CardPersonagem key={personagem.id} {...personagem} />
-            ))}
-        </Grid>
+        {listaPersonagens.length <= 0 ? (
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            alignItems={"center"}
+            width={"100%"}
+            position={"fixed"}
+            bottom={"1rem"}
+          >
+            <img src={RickAndMortyImage} alt="" />
+            <p>©rickandmortyapi.com</p>
+          </Box>
+        ) : (
+          <>
+            <p>Resultados</p>
+            <Grid container spacing={4}>
+              {listaPersonagens.map((personagem) => (
+                <CardPersonagem key={personagem.id} {...personagem} />
+              ))}
+            </Grid>
+          </>
+        )}
       </Box>
     </div>
   );
