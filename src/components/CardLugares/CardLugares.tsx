@@ -1,6 +1,7 @@
-import { Box, styled, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getPersonagemById } from "../../service/apiService";
+import { CardBox, TextBox } from "../CardBox/CardBox";
 
 export type LugaresAPI = {
   id: number;
@@ -11,26 +12,6 @@ export type LugaresAPI = {
   url: string;
   created: string;
 };
-
-const CardBox = styled(Box)(() => {
-  return {
-    display: "flex",
-    height: "150px",
-    width: "80%",
-    backgroundColor: "#EEEEEE",
-    justifyContent: "space-between",
-    boxShadow: "rgba(0, 0, 0, 0.2) 0px 6px 15px",
-  };
-});
-
-const TextBox = styled(Box)(() => {
-  return {
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    padding: "1rem",
-  };
-});
 
 export const CardLugares = ({ ...lugares }: LugaresAPI) => {
   const [imagem, setImagem] = useState("");

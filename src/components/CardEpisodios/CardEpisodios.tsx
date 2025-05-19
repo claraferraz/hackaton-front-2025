@@ -1,3 +1,4 @@
+import { CardBox, TextBox } from "../CardBox/CardBox";
 import { H1 } from "../H1/H1";
 
 export type EpisodiosAPI = {
@@ -12,10 +13,13 @@ export type EpisodiosAPI = {
 
 export const CardEpisodios = ({ ...episodios }: EpisodiosAPI) => {
   return (
-    <div>
-      <H1>{episodios.id}</H1>
-      <h4>{episodios.name}</h4>
-      <p>Lançamento {episodios.air_date}</p>
-    </div>
+    <CardBox>
+      <TextBox>
+        <H1>{episodios.id}</H1>
+        <h4>{episodios.name}</h4>
+        <p>Lançamento {episodios.air_date}</p>
+      </TextBox>
+      <img src="" alt="" />
+    </CardBox>
   );
 };
