@@ -1,14 +1,33 @@
 import { Box, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { H1 } from "../../components/H1/H1";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Center } from "../../components/Center/Center";
+import { getPersonagem } from "../../service/apiService";
+import {
+  CardPersonagem,
+  type PersonagemAPI,
+} from "../../components/CardPersonagem/CardPersonagem";
+import { Grid } from "@mui/system";
 
 export const PersonagensPage = () => {
   const [personagem, setPersonagem] = useState("");
-  const [status, setStatus] = useState("");
-  const [gender, setGender] = useState("");
-  const statusOptions = ["alive", "dead", "unknown"];
-  const genderOptions = ["female", "male", "genderless", "unknown"];
+  const statusOptions = ["Status", "Alive", "Dead", "Unknown"];
+  const genderOptions = ["Gender", "Female", "Male", "Genderless", "Unknown"];
+  const [status, setStatus] = useState<string>(statusOptions[0]);
+  const [gender, setGender] = useState<string>(genderOptions[0]);
+  const [listaPersonagens, setlistaPersonagens] = useState<PersonagemAPI[]>([]);
+
+  useEffect(() => {
+    getPersonagem({
+      name: personagem,
+      status: status,
+      gender: gender,
+    }).then((response) => {
+      console.log(personagem, status, gender);
+      setlistaPersonagens(response.data.results);
+      console.log(response.data);
+    });
+  }, [personagem, status, gender]);
 
   return (
     <div>
@@ -54,6 +73,15 @@ export const PersonagensPage = () => {
           </Box>
         </Box>
       </Center>
+      <Box>
+        <p>Resultados</p>
+        <Grid container spacing={4}>
+          {listaPersonagens.length > 0 &&
+            listaPersonagens.map((personagem) => (
+              <CardPersonagem key={personagem.id} {...personagem} />
+            ))}
+        </Grid>
+      </Box>
     </div>
   );
 };
