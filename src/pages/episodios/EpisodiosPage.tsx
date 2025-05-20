@@ -6,6 +6,7 @@ import {
   type EpisodiosAPI,
 } from "../../components/CardEpisodios/CardEpisodios";
 import { MenuItem, Select } from "@mui/material";
+import { Center } from "../../components/Center/Center";
 
 export const EpisodiosPage = () => {
   const [temporada, setTemporada] = useState<string>("Temporada 1");
@@ -19,27 +20,34 @@ export const EpisodiosPage = () => {
   ];
 
   useEffect(() => {
-    getEpisodes().then((response) => {
+    getEpisodes(1).then((response) => {
       setEpisodios(response.data.results);
     });
   }, []);
 
   return (
     <div>
-      <H1>Episodios</H1>
-      <Select
-        value={temporada}
-        onChange={(e) => setTemporada(e.target.value)}
-        fullWidth
-      >
-        {temporadasList.map((option) => (
-          <MenuItem value={option}>{option}</MenuItem>
-        ))}
-      </Select>
-      {episodios.length > 0 &&
-        episodios.map((episodio) => (
-          <CardEpisodios key={episodio.id} {...episodio} />
-        ))}
+      <Center>
+        <H1>Episodios</H1>
+        <Select
+          value={temporada}
+          sx={{
+            width: "10rem",
+            color: "#12B0C9",
+            backgroundColor: "#EEEEEE",
+            border: "1px solid #EEEEEE",
+          }}
+          onChange={(e) => setTemporada(e.target.value)}
+        >
+          {temporadasList.map((option) => (
+            <MenuItem value={option}>{option}</MenuItem>
+          ))}
+        </Select>
+        {episodios.length > 0 &&
+          episodios.map((episodio) => (
+            <CardEpisodios key={episodio.id} {...episodio} />
+          ))}
+      </Center>
     </div>
   );
 };

@@ -6,4 +6,5 @@ export const Center = styled(Container)(() => ({
   alignItems: "center",
   gap: "20px",
   marginTop: "10vh",
+  marginBottom: "4vh",
 }));

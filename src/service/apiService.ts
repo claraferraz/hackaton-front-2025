@@ -39,8 +39,12 @@ export const getLocations = async (page: number) => {
   });
 };
 
-export const getEpisodes = async () => {
-  return await axios.get(url.episodes);
+export const getEpisodes = async (page: number) => {
+  return await axios.get(url.episodes, {
+    params: {
+      page: page,
+    },
+  });
 };
 
 export const getEpisodesById = async (id: string) => {

@@ -29,6 +29,7 @@ export const LugaresPage = () => {
       setLugares([...lugares, ...response.data.results]);
     });
     console.log(page);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page]);
 
   return (
