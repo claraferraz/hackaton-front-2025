@@ -7,10 +7,41 @@ import {
 import { MenuItem, Select } from "@mui/material";
 import { Center } from "../../components/Center/Center";
 import { getEpisodes } from "../../service/apiService";
+import type { AxiosResponse } from "axios";
+
+const getAllEpisodes = async () => {
+  try {
+    const response = await getEpisodes(1);
+
+    const totalPages = response.data.info.pages;
+    const episodes = response.data.results as EpisodiosAPI[];
+
+    if (totalPages === 1) {
+      return episodes;
+    }
+
+    const allRequests: Array<Promise<AxiosResponse>> = [];
+    for (let i = 2; i <= totalPages; i++) {
+      allRequests.push(getEpisodes(i));
+    }
+    const allResponses = await Promise.all(allRequests);
+
+    const allEpisodes: EpisodiosAPI[] = allResponses.reduce(
+      (listaDeEpisodios, response) => [
+        ...listaDeEpisodios,
+        ...response.data.results,
+      ],
+      episodes
+    );
+
+    return allEpisodes;
+  } catch {
+    throw new Error("Não foi possível carregar a quantidade de páginas");
+  }
+};
 
 export const EpisodiosPage = () => {
   const [list, setList] = useState<EpisodiosAPI[]>([]);
-  const [pagesAmount, setPagesAmount] = useState<number>(1);
   const [temporada, setTemporada] = useState<string>("Temporada 1");
   const temporadasList = [
     "Temporada 1",
@@ -20,31 +51,13 @@ export const EpisodiosPage = () => {
     "Temporada 5",
   ];
   useEffect(() => {
-    try {
-      getEpisodes(1).then((response) => {
-        setPagesAmount(response.data.info.pages);
-        setList(response.data.results);
-      });
-    } catch {
-      throw new Error("Não foi possível carregar a quantidade de páginas");
-    }
-  }, []);
+    const setupEverything = async () => {
+      const episodes = await getAllEpisodes();
+      setList(episodes);
+    };
 
-  useEffect(() => {
-    for (let i = 2; i <= pagesAmount; i++) {
-      getEpisodes(i).then((response) => {
-        setList((l) => [...l, ...response.data.results]);
-      });
-    }
-    try {
-      getEpisodes(1).then((response) => {
-        setPagesAmount(response.data.info.pages);
-        setList(response.data.results);
-      });
-    } catch {
-      throw new Error("Não foi possível carregar a lista de episódios");
-    }
-  }, [pagesAmount]);
+    setupEverything();
+  }, []);
 
   const episodiosFiltrados: EpisodiosAPI[] = list.filter(
     (episodio: EpisodiosAPI) => {
@@ -65,8 +78,6 @@ export const EpisodiosPage = () => {
       }
     }
   );
-
-  useEffect(() => {}, [temporada]);
 
   return (
     <div>
