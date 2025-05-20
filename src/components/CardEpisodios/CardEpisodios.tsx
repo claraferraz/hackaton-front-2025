@@ -38,6 +38,7 @@ export const CardEpisodios = ({ ...episodios }: EpisodiosAPI) => {
         <H1>{episodios.id}</H1>
         <h4>{episodios.name}</h4>
         <p>Lançamento {episodios.air_date}</p>
+        <p>{episodios.episode}</p>
       </TextBox>
       <img src={imagem} alt="" />
     </CardBox>
